@@ -1,0 +1,298 @@
+h1 {
+    color: rgb(65, 85, 136);
+    margin-top: 5px;
+    font-style: normal;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 24px;
+    text-align: center;
+}
+
+h2 {
+    color: rgb(44, 182, 99);
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 40px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 15px;
+    margin-top: 2px;
+}
+
+hr {
+    border: none;
+    /* Elimina el borde predeterminado */
+    height: 2px;
+    /* Altura de la línea */
+    background-color: #c4c2c2;
+    /* Color de la línea */
+    width: 54%;
+    /* Longitud de la línea (ajusta según sea necesario) */
+    margin: 20px auto;
+    /* Espacio superior e inferior y centrado */
+}
+
+h3,
+h4 {
+    color: rgb(65, 85, 136);
+    margin-left: 23%;
+    font-size: 23px;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+/* 
+/* Estilos para el modal */
+.modal {
+    display: none;
+    /* Oculto por defecto */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* Estilo para el contenedor del modal */
+.modal-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    /* Espacio entre las dos secciones */
+    margin-top: 30px;
+}
+
+/* Estilo para la sección de vectores */
+.vectors-section,
+.matrix-section {
+    flex: 1;
+    /* Ambas secciones tomarán la misma cantidad de espacio */
+}
+
+/* Ajuste para las tablas dentro del modal */
+.modal-content table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.modal-content table th,
+.modal-content table td {
+    padding: 8px;
+    text-align: center;
+    border: 1px solid rgb(65, 65, 65);
+}
+
+.modal-content th {
+    background-color: #f2f2f2;
+}
+
+
+.modal-content {
+    background-color: white;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-height: 70%;
+    /* Limitar la altura del modal */
+    overflow-y: auto;
+    /* Habilitar scroll dentro del modal */
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+body {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    /* Establece la fuente a Arial, con una fuente sans-serif como respaldo */
+    /* font-size: 20px; */
+    /* Tamaño de fuente en píxeles */
+    line-height: 1.5;
+    /* Espaciado entre líneas para mejorar la legibilidad */
+    margin: 0;
+    /* Elimina el margen por defecto */
+    padding: 0;
+    /* Elimina el padding por defecto */
+    overflow: hidden;
+}
+
+/* Estilo para el área de arrastre */
+.drag-area {
+    width: 900px;
+    height: 90px;
+    border: 2px dashed #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 35px;
+    padding: 5px;
+    cursor: pointer;
+}
+
+
+
+.container {
+    display: flex;
+    /* Usar flexbox para centrar */
+    justify-content: center;
+    /* Centra horizontalmente */
+    /* margin: 20px; */
+    /* Espacio alrededor del contenedor */
+}
+
+.drag-area.dragover {
+    border-color: #333;
+    background-color: rgba(0, 255, 0, 0.1);
+    /* Color de fondo cuando se arrastra */
+}
+
+.drag-area p {
+    font-size: 20px;
+    color: #9c9b9b;
+}
+
+/* Estilo adicional para el área al arrastrar */
+.drag-area.dragging {
+    border-color: green;
+}
+
+.file-info {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.btnOpenModal {
+    background: linear-gradient(45deg, #f7f6fc, #d8dedf);
+    /* Gradiente de fondo */
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    border: none;
+    /* Sin borde */
+    border-radius: 25px;
+    /* Bordes redondeados */
+    color: rgb(20, 20, 20);
+    /* Color del texto */
+    font-size: 16px;
+    /* Tamaño de la fuente */
+    margin-top: 7%;
+    padding: 15px 30px;
+    /* Espaciado interno del botón */
+    cursor: pointer;
+    /* Cambia el cursor al pasar sobre el botón */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    /* Sombra para el botón */
+    transition: all 0.3s ease;
+    /* Transición suave para el hover */
+}
+
+/* Efecto hover */
+.btnOpenModal:hover {
+    background: linear-gradient(45deg, #d4d6d7, #e0e0e4);
+    /* Cambia el gradiente al pasar el mouse */
+    transform: translateY(-2px);
+    /* Mueve el botón un poco hacia arriba */
+    box-shadow: 0 6px 15px rgba(250, 250, 250, 0.3);
+    /* Aumenta la sombra al hacer hover */
+}
+
+
+.file-content {
+
+    white-space: pre-wrap;
+    background: #f5f5f5;
+    line-height: 2;
+    /* padding: 10px; */
+    padding-top: 1%;
+    padding-left: 1.5%;
+    padding-bottom: 1%;
+    border: 1px solid #ccc;
+    width: 900px;
+    font-size: 16px;
+    /* Ancho fijo */
+    max-width: 90%;
+    box-sizing: border-box;
+    /* Incluye el padding y el borde en el ancho total */
+    /* Ancho máximo para pantallas pequeñas */
+}
+
+
+/* Estilo para la tabla dentro del modal */
+#myModal table {
+    width: 100%;
+    /* border-collapse: separate; */
+    border-spacing: 12px;
+    /* Deja un espacio de 5px entre las columnas */
+    margin-top: 20px;
+}
+
+/* Encabezados de tabla en el modal */
+#myModal th {
+    background-color: #f4f4f4;
+    color: #333;
+    font-weight: bold;
+    padding: 12px;
+    text-align: center;
+    border-bottom: 2px solid #ddd;
+    width: 100px;
+    /* Ancho fijo de 100 píxeles */
+    height: 50px;
+    /* Altura fija */
+    /* Todas las columnas con el mismo ancho */
+}
+
+/* Celdas de la tabla en el modal */
+#myModal td {
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #ddd;
+    font-size: 1.2em;
+    color: #333;
+    /* width: calc(100% / 3); */
+    /* width: calc(33.33% - 20px); */
+    /* Distribuir el ancho en 3 partes y restar espacio para el borde o padding */
+    /* min-width: 100px; */
+    width: 100px;
+    /* Ancho fijo de 100 píxeles */
+    height: 50px;
+    /* Altura fija */
+    /* Ancho mínimo de 100px */
+    /* height: 50px; */
+    /* Altura fija */
+    /* text-align: center; */
+    /* Alineación del texto */
+    /* Todas las columnas con el mismo ancho */
+}
+
+/* Estilo para las filas de los vectores en el modal */
+#myModal tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Resalta la fila de encabezado en el modal */
+#myModal th {
+    background-color: #eaeaea;
+}
+
+/* Efecto hover en las celdas del modal */
+#myModal td:hover {
+    background-color: #f1f1f1;
+}
+
+/* Bordes redondeados y sombra en la tabla dentro del modal */
+#myModal table {
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgb(255, 255, 255);
+}

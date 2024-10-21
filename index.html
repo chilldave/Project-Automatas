@@ -1,0 +1,119 @@
+  <!DOCTYPE html>
+  <html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drag and Drop .txt</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <header>
+    <div>
+      <h1>Carlos David Caal Camey 5990-22-8353</h1>
+    </div>
+    <div>
+      <h2>PROYECTO - INDIVIDUAL - A</h2>
+    </div>
+  </header>
+  <body>
+    <!-- Área de arrastre que también es cliqueable -->
+    
+
+
+
+      <h3>Cargar archivo TXT</h3>
+    <hr>
+    <div class="container">
+    <div class="drag-area" id="drag-area">
+      <p >Arrastra y suelta un archivo .txt aquí o haz clic para seleccionarlo</p>
+      <input type="file" id="file-input" accept=".txt" style="display: none;">
+    </div>
+
+    
+    
+  </div>
+
+
+    <h4>Despliegue de Archivo</h4>
+    <hr>
+
+    <div class="container">
+    <div class="file-content" id="file-content"></div>
+  </div>
+
+
+  <!-- Botón para abrir el modal -->
+  <div class="container">
+    <div>
+      <button  class="btnOpenModal" id="openModal" style="display: none;">Mostrar Vectores y Matriz</button>
+    </div>
+  </div>
+
+
+  <!-- Modal -->
+  <!-- <div id="myModal" class="modal">
+      <div class="modal-content">
+          <span class="close">&times;</span>
+          <h2>Vectores y Matriz</h2>
+          <p>Aquí puedes mostrar los vectores y la matriz que has generado.</p>
+          <!-- Aquí puedes agregar la estructura de la matriz o vectores -->
+          <!-- <table border="1">
+              <thead>
+                  <tr>
+                      <th>Vector/Matriz</th>
+                      <th>Valor</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr><td>Vector 1</td><td>100</td></tr>
+                  <tr><td>Vector 2</td><td>200</td></tr>
+                  <tr><td>Matriz 1</td><td>300</td></tr>
+                  <tr><td>Matriz 2</td><td>400</td></tr>
+                  <!-- Puedes seguir agregando más filas -->
+              <!-- </tbody>
+          </table>
+      </div>
+  </div> -->
+
+  <!-- Modal -->
+<div id="myModal" class="modal">
+  <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Vectores y Matriz</h2>
+      
+      <!-- Contenedor para los vectores y la matriz -->
+      <div class="modal-container">
+          <!-- Vectores -->
+          <div class="vectors-section">
+              <h3>Vectores</h3>
+              <hr>
+              <table border="1">
+                <thead>
+                  <tr>
+                      <th>Q</th>
+                      <th>Σ</th>
+                      <th>A</th>
+                  </tr>
+              </thead>
+                  <tbody>
+
+                  </tbody>
+              </table>
+          </div>
+
+          <!-- Matriz -->
+          <div class="matrix-section">
+              <h3>Matriz</h3>
+              <hr>
+              <table border="1" id="tablaMatriz">
+                  <!-- Aquí se generará la matriz con JavaScript -->
+                  
+              </table>
+          </div>
+      </div>
+  </div>
+</div>
+
+
+    <script src="main.js"></script>
+  </body>
+  </html>
