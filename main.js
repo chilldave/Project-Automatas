@@ -3,47 +3,87 @@ let globalZVector = null;
 let globalAVector = null;
 let globalMatrix = {};
 
-
-class Quintupla {
-  constructor(data) {
-      this.data = data.split('\n').map(line => line.trim()).filter(line => line !== '');
-      this.patterns = {
-          Q: /^Q=\{.*\}$/,
-          Z: /^Z=\{.*\}$/,
-          i: /^i=[A-Z]$/,
-          A: /^A=\{.*\}$/,
-          w: /^w=\{.*\}$/
-      };
-      this.Q_vector = null;
-      this.Z_vector = null;
-      this.A_vector = null;
-      this.w_transitions = null; // Almacenará la información de las transiciones
-
-  }
-
-  
-  validate() {
-      const expectedKeys = Object.keys(this.patterns);
-      const errorMessages = []; 
-      if (this.data.length !== expectedKeys.length) {
-          return ['Número de líneas incorrecto.'];
-      }
-
-      for (let i = 0; i < expectedKeys.length; i++) {
-          const key = expectedKeys[i];
-          const regex = this.patterns[key];
-          if (!regex.test(this.data[i])) {
-              errorMessages.push(`Error en la línea ${i + 1}: "${this.data[i]}". \nFormato esperado: ${key}={...}`);
-          }
-      }
-      
+class Quintupla{
+    constructor(data) {
+        this.data = data.split('\n').map(line => line.trim()).filter(line => line !== '');
+        this.patterns = {
+            Q: /^Q=\{([A-Za-z0-9]+,)*[A-Za-z0-9]+\}$/, 
+            Z: /^Z=\{([A-Za-z0-9]+,)*[A-Za-z0-9]+\}$/, 
+            i: /^i=[A-Za-z0-9]+$/, 
+            A: /^A=\{([A-Za-z0-9]+,)*[A-Za-z0-9]+\}$/, 
+            w: /^w=\{(\([A-Za-z0-9]+,[A-Za-z0-9]+,[A-Za-z0-9]+\)(;)?)+\}$/
+        };
+        this.Q_vector = null;
+        this.Z_vector = null;
+        this.A_vector = null;
+        this.w_transitions = null;
+    }
+    
+    validate() {
+        const expectedKeys = Object.keys(this.patterns);
+        const errorMessages = []; 
+        if (this.data.length !== expectedKeys.length) {
+            return ['Número de líneas incorrecto.'];
+        }
+    
+        for (let i = 0; i < expectedKeys.length; i++) {
+            const key = expectedKeys[i];
+            const regex = this.patterns[key];
+            if (!regex.test(this.data[i])) {
+                errorMessages.push(`Error en la línea ${i + 1}: "${this.data[i]}"`); 
+            }
+        }
+    
+        const qLine = this.data[0]; 
+        const iLine = this.data[2];
+        const aLine = this.data[3];
+        const wLine = this.data[4]; 
+    
+        // Extraer estados de Q y A
+        const statesQ = qLine.match(/[A-Za-z0-9]+/g) || []; 
+        const stateI = iLine.split('=')[1].trim(); 
+    
+        // Verificación de estado inicial i
+        if (!statesQ.includes(stateI)) {
+            errorMessages.push(`Error en la línea 3: El estado "${stateI}" en "i" no existe en Q.`);
+        }
+    
+        // Verificar estados en A contra Q
+        // const statesA = aLine.match(/[A-Za-z0-9]+/g) || []; 
+    
+        // statesA.forEach(state => {
+        //     if (!statesQ.includes(state)) {
+        //         errorMessages.push(`Error en la línea 4: El estado "${state}" en "A" no existe en Q.`);
+        //     }
+        // });
+    
+        const transitions = wLine.match(/\(([^)]+)\)/g);
+        const zLine = this.data[1]; 
+        const alphabet = zLine.match(/[A-Za-z0-9]+/g);
+    
+        if (transitions) {
+            transitions.forEach(transition => {
+                const [stateFrom, symbol, stateTo] = transition.replace(/[()]/g, '').split(',');
+                
+                if (!statesQ.includes(stateFrom.trim())) {
+                    errorMessages.push(`Error en w: El estado "${stateFrom.trim()}" no está en Q.`);
+                }
+    
+                if (!alphabet.includes(symbol.trim())) {
+                    errorMessages.push(`Error en w: El símbolo "${symbol.trim()}" no está en Z.`);
+                }
+    
+                if (!statesQ.includes(stateTo.trim())) {
+                    errorMessages.push(`Error en w: El estado "${stateTo.trim()}" no está en Q.`);
+                }
+            });
+        }
       if(errorMessages.length === 0){
         this.parseVectors();
         this.parseMatriz();
-
-
       }
       
+    
     //   console.log('validate ');
     //   console.log(errorMessages.length);
       return errorMessages.length >= 0 ? errorMessages : ['El archivo tiene una estructura válida.'];
@@ -64,10 +104,9 @@ class Quintupla {
     globalQVector = this.Q_vector.getElements();
     globalZVector = this.Z_vector.getElements();
     globalAVector = this.A_vector.getElements();
-
-    // console.log("Conjunto Q:", this.Q_vector.getElements()); // ["A", "B"]
-    // console.log("Conjunto Z:", this.Z_vector.getElements()); // ["a", "b"]
-    // console.log("Conjunto A:", this.A_vector.getElements()); // ["B"]
+    //  console.log("Conjunto Q:", this.Q_vector.getElements()); // ["A", "B"]
+    //  console.log("Conjunto Z:", this.Z_vector.getElements()); // ["a", "b"]
+    //  console.log("Conjunto A:", this.A_vector.getElements()); // ["B"]
   }
 
   transformarTransiciones(obj) {
@@ -90,12 +129,10 @@ class Quintupla {
     const w_data = this.data.find(line => line.startsWith('w=')).split('=')[1];
     this.w_transitions = w_data;
 
-    console.log(this.w_transitions);
     
     // Remover los corchetes y dividir las transiciones por punto y coma
     const transiciones = this.w_transitions.replace(/[{}]/g, '').split(';');
-    console.log('Segun Se hace un split ;')
-    console.log(transiciones)
+  
 
     transiciones.forEach(transicion => {
         const [estadoOrigen, letra, estadoDestino] = transicion.split(',');
@@ -120,7 +157,7 @@ class Quintupla {
     // console.log('DATA')
     // console.log(w_data);
     const convertTransitions = this.transformarTransiciones(globalMatrix);
-    console.log(convertTransitions);
+    // console.log(convertTransitions);
 
     this.w_transitions  = new Automata(convertTransitions);
     this.w_transitions.generarTabla();
@@ -204,6 +241,31 @@ class Arrastrar_Soltar {
           alert('Por favor, selecciona un archivo .txt válido.');
       }
   }
+  showVectorAndMatriz(){
+
+    modal.style.display = "block";
+
+    // Limpia el contenido anterior
+    tableBody.innerHTML = '';
+
+    // Agrega los vectores a la tabla en el formato de la imagen
+    if (globalQVector && globalZVector && globalAVector) {
+        let rows = Math.max(globalQVector.length, globalZVector.length, globalAVector.length);
+
+        // Encabezados de las columnas
+        //tableBody.innerHTML = `<thead><tr><th>Q</th><th>Σ</th><th>A</th></tr></thead>`;
+
+        // Añadir filas con los valores de los vectores
+        for (let i = 0; i < rows; i++) {
+            let qVal = globalQVector[i] || ''; // Si no hay más valores, deja la celda vacía
+            let zVal = globalZVector[i] || '';
+            let aVal = globalAVector[i] || '';
+            tableBody.innerHTML += `<tbody class="vector-cell"><tr><td>${qVal}</td><td class="vector-cell">${zVal}</td><td>${aVal}</td class="vector-cell"></tr></tbody>`;
+        }
+    } else {
+        tableBody.innerHTML = '<tbody><tr><td colspan="3">No hay datos disponibles</td></tr></tbody>';
+    }
+  }
 
   validateFile(file) {
       const allowedExtension = ".txt";
@@ -221,14 +283,16 @@ class Arrastrar_Soltar {
           const content = event.target.result;
           //this.fileContent.textContent = content;
           const errors = this.validateQuintuple(content);
-          console.log(errors.length);
+        //   console.log(errors.length);
           if(errors.length === 0){
             this.fileContent.textContent = content;
-            btnOpenModal.style.display = 'block';
+            this.showVectorAndMatriz();
+            // btnOpenModal.style.display = 'block';
             
           }else{
             this.fileContent.textContent = `${errors.join(', ')}`;
-            btnOpenModal.style.display = 'none';
+            modal.style.display = "none";
+
           }
         
       };
@@ -284,46 +348,6 @@ const btnOpenModal = document.getElementById("openModal");
 const span = document.getElementsByClassName("close")[0];
 const tableBody = document.querySelector("tbody");
 
-// Función para abrir el modal y mostrar los vectores
-btnOpenModal.onclick = function() {
-    modal.style.display = "block";
-
-    // Limpia el contenido anterior
-    tableBody.innerHTML = '';
-
-    // Agrega los vectores a la tabla en el formato de la imagen
-    if (globalQVector && globalZVector && globalAVector) {
-        let rows = Math.max(globalQVector.length, globalZVector.length, globalAVector.length);
-
-        // Encabezados de las columnas
-        //tableBody.innerHTML = `<thead><tr><th>Q</th><th>Σ</th><th>A</th></tr></thead>`;
-
-        // Añadir filas con los valores de los vectores
-        for (let i = 0; i < rows; i++) {
-            let qVal = globalQVector[i] || ''; // Si no hay más valores, deja la celda vacía
-            let zVal = globalZVector[i] || '';
-            let aVal = globalAVector[i] || '';
-            tableBody.innerHTML += `<tbody><tr><td>${qVal}</td><td>${zVal}</td><td>${aVal}</td></tr></tbody>`;
-        }
-    } else {
-        tableBody.innerHTML = '<tbody><tr><td colspan="3">No hay datos disponibles</td></tr></tbody>';
-    }
-};
-
-
-// Función para cerrar el modal
-span.onclick = function() {
-    modal.style.display = "none";
-};
-
-// Cerrar el modal cuando se hace clic fuera de él
-window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-};
-
-// Clase para manejar la generación dinámica de la matriz de transiciones
 class Automata {
     constructor(transiciones) {
         this.transiciones = transiciones;
@@ -353,7 +377,7 @@ class Automata {
             // Añadir el estado final al conjunto correspondiente
             this.matrizTransiciones[estadoInicial][letra].add(estadoFinal);
         });
-        console.log(this.matrizTransiciones)
+        // console.log(this.matrizTransiciones)
     }
 
     // Método para generar la tabla de transiciones dinámicamente
@@ -366,10 +390,8 @@ class Automata {
         const estadosArray = Array.from(this.estados);
         const alfabetoArray = Array.from(this.alfabeto);
         const estadosVector = globalZVector;
-        console.log('Informacion')
-        console.log(estadosArray);
-        console.log(alfabetoArray);
-    
+        const alfabetoVector = globalQVector;
+
         // Create header row
         let headerRow = '<tr><th>Estado</th>';
         estadosVector.forEach(letra => {
@@ -379,11 +401,13 @@ class Automata {
         tablaMatriz.innerHTML += headerRow;
     
         // Create rows for each state
-        estadosArray.forEach(estado => {
+        alfabetoVector.forEach(estado => {
             let row = `<tr><td>${estado}</td>`;
             estadosVector.forEach(letra => {
                 const destinos = this.matrizTransiciones[estado]?.[letra] || new Set();
-                row += `<td>${destinos.size > 0 ? Array.from(destinos).join(', ') : ''}</td>`;
+                row += `<td>${destinos.size > 0 ? Array.from(destinos).sort().join(',') : ''}</td>`;
+                // const destinosOrdenados = Array.from(destinos).sort().join(', ');
+                // row += `<td>${destinosOrdenados}</td>`;
             });
             row += '</tr>';
             tablaMatriz.innerHTML += row;
@@ -393,13 +417,6 @@ class Automata {
 }
 
 
-
-// const convertTransitions = transformarTransiciones(globalMatrix);
-
-// console.log('Imprimientdo')
-// console.log(globalMatrix);
-// // Crear una instancia de Automata con las transiciones de ejemplo
-// const automata = new Automata(convertTransitions);
 
 
 

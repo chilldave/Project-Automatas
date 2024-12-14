@@ -41,52 +41,16 @@
   </div>
 
 
-  <!-- Botón para abrir el modal -->
-  <div class="container">
-    <div>
-      <button  class="btnOpenModal" id="openModal" style="display: none;">Mostrar Vectores y Matriz</button>
-    </div>
-  </div>
-
-
-  <!-- Modal -->
-  <!-- <div id="myModal" class="modal">
-      <div class="modal-content">
-          <span class="close">&times;</span>
-          <h2>Vectores y Matriz</h2>
-          <p>Aquí puedes mostrar los vectores y la matriz que has generado.</p>
-          <!-- Aquí puedes agregar la estructura de la matriz o vectores -->
-          <!-- <table border="1">
-              <thead>
-                  <tr>
-                      <th>Vector/Matriz</th>
-                      <th>Valor</th>
-                  </tr>
-              </thead>
-              <tbody>
-                  <tr><td>Vector 1</td><td>100</td></tr>
-                  <tr><td>Vector 2</td><td>200</td></tr>
-                  <tr><td>Matriz 1</td><td>300</td></tr>
-                  <tr><td>Matriz 2</td><td>400</td></tr>
-                  <!-- Puedes seguir agregando más filas -->
-              <!-- </tbody>
-          </table>
-      </div>
-  </div> -->
-
-  <!-- Modal -->
-<div id="myModal" class="modal">
+<div id="myModal" class="modal" style="display: none;">
   <div class="modal-content">
-      <span class="close">&times;</span>
-      <h2>Vectores y Matriz</h2>
-      
       <!-- Contenedor para los vectores y la matriz -->
       <div class="modal-container">
           <!-- Vectores -->
-          <div class="vectors-section">
+          <div class="vectors-section scrollable-section1">
               <h3>Vectores</h3>
               <hr>
-              <table border="1">
+              <div class="scrollable-vectors">
+              <table border="1" class="fixed-table1">
                 <thead>
                   <tr>
                       <th>Q</th>
@@ -94,17 +58,18 @@
                       <th>A</th>
                   </tr>
               </thead>
-                  <tbody>
+                  <tbody id="tablebody">
 
                   </tbody>
               </table>
+              </div>
           </div>
 
           <!-- Matriz -->
-          <div class="matrix-section">
+          <div class="matrix-section scrollable-section2">
               <h3>Matriz</h3>
               <hr>
-              <table border="1" id="tablaMatriz">
+              <table border="1" id="tablaMatriz" class="fixed-table">
                   <!-- Aquí se generará la matriz con JavaScript -->
                   
               </table>
